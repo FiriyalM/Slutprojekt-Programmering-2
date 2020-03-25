@@ -4,7 +4,7 @@ namespace Template
 {
 #if WINDOWS || LINUX
     /// <summary>
-    /// The main class.
+    /// The main class .
     /// </summary>
     public static class Program
     {
