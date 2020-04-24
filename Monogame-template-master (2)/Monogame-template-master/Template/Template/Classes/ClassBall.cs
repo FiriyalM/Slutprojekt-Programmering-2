@@ -15,11 +15,13 @@ namespace Template.Classes
         SpriteBatch spriteBatch;
         GraphicsDevice graphics;
         Texture2D pixel;
+        Random rnd;
 
         //It shows the position and draws out the ball 
         
         int ballSize;
 
+        public int speed { get; set; } = 1;
         public bool gameRun { get; set; }
         public int dirX { get; set; }
         public int dirY { get; set; }
@@ -37,6 +39,23 @@ namespace Template.Classes
 
             pixel = new Texture2D(graphics, 1, 1);
             pixel.SetData(new Color[] { Color.White });
+
+            rnd = new Random();
+
+        }
+
+        public void ResetDirection()
+        {
+            do
+            {
+                dirX = rnd.Next(-10, 10);
+            } while (dirX == 0);
+
+            do
+            {
+                dirY = rnd.Next(-10, 10);
+            } while (dirY == 0);
+
 
         }
 
@@ -61,11 +80,35 @@ namespace Template.Classes
         {
             posX = graphics.Viewport.Width / 2 - ballSize / 2;
             posY = graphics.Viewport.Height / 2 - ballSize / 2;
+            ResetDirection();
 
 
         }
+
+        public void CheckWallColision()
+        {
+            if (posY <= 0 || posY + ballSize > graphics.Viewport.Height)
+            {
+                dirY = -dirY;
+            }
+        }
+
+        public void CheckRacketColision(ClassRacket Player)
+        {
+           
+
+        }
+
+
         public override void Update(GameTime gameTime)
         {
+            if (gameRun)
+            {
+                posX += dirX * speed;
+                posY += dirY * speed;
+
+                CheckWallColision();
+            }
             base.Update(gameTime);
         }
     }

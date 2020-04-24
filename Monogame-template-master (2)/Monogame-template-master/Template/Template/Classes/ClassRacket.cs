@@ -18,10 +18,10 @@ namespace Template.Classes
 
         int width;
         int height;
+        public int posY { get; set; }
         public int posX { get; set; }
-        int posY;
 
-        public ClassRacket(GraphicsDevice graphics, SpriteBatch spriteBatch, Game game, int width, int height, int posX, int posY,) : base(game)
+        public ClassRacket(GraphicsDevice graphics, SpriteBatch spriteBatch, Game game, int width, int height, int posX, int posY) : base(game)
         {
             this.spriteBatch = spriteBatch;
             this.graphics = graphics;
