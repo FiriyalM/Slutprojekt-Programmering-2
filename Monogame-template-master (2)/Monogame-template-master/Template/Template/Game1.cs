@@ -3,12 +3,15 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Template.Classes;
 using Microsoft.Xna.Framework.Content;
+using System.IO;
 
 namespace Template
 {
-   
+   //This is our game itself.
     public class Game1 : Game
     {
+        //This is what we 
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         ClassBall ball;
@@ -16,11 +19,16 @@ namespace Template
         ClassRacket P2;
         SpriteFont font;
 
+        //
+        
         int scoreP1 = 0;
         int scoreP2 = 0;
         int racketWidth = 10;
         int racketHeight = 100;
         int ballSize = 10;
+        public object sw;
+
+        //
 
         public Game1()
         {
@@ -28,16 +36,23 @@ namespace Template
             Content.RootDirectory = "Content";
         }
 
-       
+       //
         protected override void Initialize()
         {
            
             base.Initialize();
         }
 
+        //
         
         protected override void LoadContent()
         {
+            using (StreamWriter sw = new StreamWriter("font"))
+            {
+                sw.Write("font");
+
+            }
+
             font = Content.Load<SpriteFont>("font");
 
 
@@ -48,6 +63,8 @@ namespace Template
             P1 = new ClassRacket(GraphicsDevice, spriteBatch, this, racketWidth, racketHeight, 10, GraphicsDevice.Viewport.Height / 2 - racketHeight/ 2);
             P2 = new ClassRacket(GraphicsDevice, spriteBatch, this, racketWidth, racketHeight, GraphicsDevice.Viewport.Width - 10 - racketWidth , GraphicsDevice.Viewport.Height / 2 - racketHeight / 2);
 
+           
+
 
             Components.Add(P1);
             Components.Add(P2);
@@ -57,13 +74,13 @@ namespace Template
 
         }
 
-
+        //
         protected override void UnloadContent()
         {
             
         }
 
-       
+       //
         protected override void Update(GameTime gameTime)
         {
             if ( Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -83,6 +100,7 @@ namespace Template
             P2.posY = Mouse.GetState().Y;
 
             // Ball goes to P2
+
             if (ball. dirX >0 )
             {
                 if (ball.posY >= P2.posY && ball.posY + ballSize < P2.posY + racketHeight && ball.posX >= P2.posX)
@@ -98,6 +116,7 @@ namespace Template
                 }
             }
             // Ball goes to P1
+
             else if (ball.dirX < 0 )
             {
                 if (ball.posY >= P1.posY && ball.posY + ballSize <= P1.posY + racketHeight && ball.posX <= P1.posX + racketWidth)
@@ -117,7 +136,7 @@ namespace Template
             base.Update(gameTime);
         }
 
-       
+       // 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(new Color(51, 51, 51));
