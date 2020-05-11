@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Template.Classes
 {
+    //This class will inherite some components from the other class named ClassRacket.
     class ClassBall : ClassRacket
     {
         //This helps to get our figures draw into the program
