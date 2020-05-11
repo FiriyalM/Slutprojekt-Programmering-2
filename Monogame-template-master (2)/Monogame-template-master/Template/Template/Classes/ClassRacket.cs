@@ -19,6 +19,7 @@ namespace Template.Classes
         protected Texture2D pixel;
 
         //The size of the players.
+        
         int width;
         int height;
 
