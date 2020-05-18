@@ -10,16 +10,17 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Template
 {
+  
+
     //This is our game itself.
     public class Game1 : Game
     {
-        public enum State
+        public enum GameState
         {
-            menu,
-            Gameover,
-
-        };
-
+            MainMenu,
+            Gameplay,
+            EndOfGame,
+        }
 
         //ascii for space, R and Escape.
         Keys start = (Keys)32;
@@ -33,9 +34,6 @@ namespace Template
         ClassRacket P1;
         ClassRacket P2;
         SpriteFont font;
-        public Texture2D menuImage;
-        public Texture2D GameoverImage;
-
 
         //The value of the score, The sizes of rackets hight and width, The size of the ball. 
 
@@ -45,7 +43,11 @@ namespace Template
         int racketHeight = 100;
         int ballSize = 10;
         public object sw;
-
+        public object _state;
+        private readonly bool pushedMainMenuButton;
+        private readonly bool pushedRestartLevelButton;
+        private readonly bool pushedStartGameButton;
+        private readonly bool playerDied;
 
         //Text file creats a file with the controllers for the player and game. 
         private void controls()
@@ -79,8 +81,7 @@ namespace Template
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            GameoverImage = null;
-            menuImage = null;
+         
         }
 
         //
@@ -109,8 +110,6 @@ namespace Template
             Components.Add(ball);
 
             ball.ResetBall();
-            menuImage = Content.Load<Texture2D>("menyimage");
-            GameoverImage = Content.Load<Texture2D>("Gameover");
         }
 
         //There is nothing here
@@ -120,8 +119,10 @@ namespace Template
         }
 
         //This is for what happens when the game is running.
-        protected override void Update(GameTime gameTime)
+        protected override void Update(GameTime deltaTime)
         {
+
+
             //When Escape key is pressed it closes the game.
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
@@ -182,22 +183,101 @@ namespace Template
 
                 }
 
-                 case Stat Gameover;
+            }
+
+
+            {
+                base.Update(deltaTime);
+                switch (_state)
                 {
-                    KeyboardState keyState = Keyboard.GetState();
-                    if (keyState.IsKeyDown(Keys.Escape))
-                        gameState = State.menu;
-                    break;
+                    case GameState.MainMenu:
+                        UpdateMainMenu(deltaTime);
+                        break;
+                    case GameState.Gameplay:
+                        UpdateGameplay(deltaTime);
+                        break;
+                    case GameState.EndOfGame:
+                        UpdateEndOfGame(deltaTime);
+                        break;
                 }
+            }
 
+        }
 
-                base.Update(gameTime);
+      
+        void UpdateMainMenu(GameTime deltaTime)
+        {
+            // Respond to user input for menu selections, etc
+            if (pushedStartGameButton)
+                _state = GameState.Gameplay;
+        }
+
+        void UpdateGameplay(GameTime deltaTime)
+        {
+            // Respond to user actions in the game.
+            // Update enemies
+            // Handle collisions
+            if (playerDied)
+                _state = GameState.EndOfGame;
+        }
+
+        void UpdateEndOfGame(GameTime deltaTime)
+        {
+            // Update scores
+            // Do any animations, effects, etc for getting a high score
+            // Respond to user input to restart level, or go back to main menu
+            if (pushedMainMenuButton)
+                _state = GameState.MainMenu;
+            else if (pushedRestartLevelButton)
+            {
+                ResetLevel();
+                _state = GameState.Gameplay;
+              
+            }
+
+            void ResetLevel()
+            {
+                throw new NotImplementedException();
             }
         }
 
-        // This tells the program what to draw out when the game starts. 
-        protected override void Draw(GameTime gameTime)
+        private void DrawEndOfGame(GameTime deltaTime)
         {
+            throw new NotImplementedException();
+        }
+
+        private void DrawGameplay(GameTime deltaTime)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void DrawMainMenu(GameTime deltaTime)
+        {
+            throw new NotImplementedException();
+        }
+
+
+
+
+        // This tells the program what to draw out when the game starts. 
+        protected override void Draw(GameTime deltaTime)
+        {
+            {
+                base.Draw(deltaTime);
+                switch (_state)
+                {
+                    case GameState.MainMenu:
+                        DrawMainMenu(deltaTime);
+                        break;
+                    case GameState.Gameplay:
+                        DrawGameplay(deltaTime);
+                        break;
+                    case GameState.EndOfGame:
+                        DrawEndOfGame(deltaTime);
+                        break;
+                }
+            }
+
             //The colour of the background
             GraphicsDevice.Clear(new Color(51, 51, 51));
             spriteBatch.Begin();
@@ -206,7 +286,9 @@ namespace Template
             spriteBatch.DrawString(font, scoreP2.ToString(), new Vector2(GraphicsDevice.Viewport.Width - 250, 50), new Color(45, 45, 45, 20));
             //Ends when alla of them show up on the srceen. 
             spriteBatch.End();
-            base.Draw(gameTime);
+            base.Draw(deltaTime);
+            
         }
     }
+    
 }
