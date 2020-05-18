@@ -214,8 +214,7 @@ namespace Template
 
         void UpdateGameplay(GameTime deltaTime)
         {
-            // Respond to user actions in the game.
-            // Update enemies
+            // Respond to user actions in the game
             // Handle collisions
             if (playerDied)
                 _state = GameState.EndOfGame;
@@ -224,8 +223,6 @@ namespace Template
         void UpdateEndOfGame(GameTime deltaTime)
         {
             // Update scores
-            // Do any animations, effects, etc for getting a high score
-            // Respond to user input to restart level, or go back to main menu
             if (pushedMainMenuButton)
                 _state = GameState.MainMenu;
             else if (pushedRestartLevelButton)
